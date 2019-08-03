@@ -20,16 +20,21 @@ def get_all_entries():
     return fs
 
 
-def generate_html_from_markdown(files):
-
+def create_html_directory():
     if not os.path.exists(OUTPUT_DIR):
         os.mkdir(OUTPUT_DIR)
 
+
+def generate_html_from_markdown(files):
     for file in files:
+        filename = file.split('.')[0]
         with open(os.path.join(CONTENT_DIR, file), 'r') as f:
             content = misaka.html(f.read())
-            print(content)
+            html_filename = filename + '.html'
+            open(os.path.join(OUTPUT_DIR, html_filename), 'w').write(content)
 
 
-entries = get_all_entries()
-generate_html_from_markdown(entries)
+if __name__ == "__main__":
+    create_html_directory()
+    entries = get_all_entries()
+    generate_html_from_markdown(entries)
