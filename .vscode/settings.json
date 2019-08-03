@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "/home/zabana/.local/share/virtualenvs/journal-Z17qc90X/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
+}
