@@ -1,12 +1,28 @@
-# step 1
-# retrieve all entries inside /entries and parse them as markdown
-# convert each one to html and save them to a different location.
 import os
 import misaka
+import frontmatter as fm
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 BASE_DIR = os.getcwd()
 CONTENT_DIR = os.path.join(BASE_DIR, 'entries')
 OUTPUT_DIR = os.path.join(BASE_DIR, 'public')
+LAYOUTS_DIR = os.path.join(BASE_DIR, 'layouts')
+
+env = Environment(
+    loader=FileSystemLoader(LAYOUTS_DIR),
+    autoescape=select_autoescape(['html', 'xml'])
+)
+
+
+def render_entry(content, **context_variables):
+    layout = context_variables.get('layout', 'post')
+    template = env.get_template(f'{layout}.html')
+    return template.render(content=content, **context_variables)
+
+
+def parse_markdown_entry(file):
+    post = fm.load(file)
+    return post.metadata, post.content
 
 
 def get_all_entries():
@@ -27,11 +43,15 @@ def create_html_directory():
 
 def generate_html_from_markdown(files):
     for file in files:
-        filename = file.split('.')[0]
+        html_filename = file.split('.')[0] + '.html'
         with open(os.path.join(CONTENT_DIR, file), 'r') as f:
-            content = misaka.html(f.read())
-            html_filename = filename + '.html'
-            open(os.path.join(OUTPUT_DIR, html_filename), 'w').write(content)
+            # extract content and metadata from the file
+            metadata, content = parse_markdown_entry(f)
+            new_entry = render_entry(
+                misaka.html(content),
+                **metadata
+            )
+            open(os.path.join(OUTPUT_DIR, html_filename), 'w').write(new_entry)
 
 
 if __name__ == "__main__":
