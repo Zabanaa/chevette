@@ -9,6 +9,7 @@ verify_ssl = true
 flake8 = "*"
 jinja2 = "*"
 misaka = "*"
+python-frontmatter = "*"
 
 [requires]
 python_version = "3.7"
