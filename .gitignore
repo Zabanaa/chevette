@@ -2,3 +2,4 @@ entries/
 public/
 layouts/
 articles/
+__pycache__/
