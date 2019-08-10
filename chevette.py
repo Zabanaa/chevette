@@ -1,15 +1,12 @@
-from colorama import Fore, Style
+from utils import folder_exists, clear_directory, print_error_and_exit, _generate_boilerplate
 import os
 import sys
-
-ARTICLES_DIR = 'articles'
-OUTPUT_DIR = 'public'
 
 
 class Chevette(object):
 
     @classmethod
-    def generate_boilerplate(cls, path):
+    def generate_boilerplate(cls, path, force):
         """
         create the basic folder structure necessary
         to the creation of a blog.
@@ -18,18 +15,23 @@ class Chevette(object):
             public -> where the final site will be generated (in html)
         */
         """
-        try:
-            os.mkdir(path)
-        except FileExistsError as e:
+
+        if folder_exists(path):
+
             err_msg = f"""
             [Error]: Could not create directory.
-            Path ({e.filename}) Already Exists.
+            Path ({path}) Already Exists.
             Please make sure the directory is empty or use --force
             to overwrite the files.
             """
-            print(Fore.RED + err_msg.strip())
-            print(Style.RESET_ALL)
-            sys.exit(1)
+
+            if force:
+                print(f'Overwriting content inside {path}')
+                clear_directory(path)
+                print('Done !')
+                return _generate_boilerplate(path)
+
+            print_error_and_exit(err_msg)
+
         else:
-            os.mkdir(os.path.join(path, ARTICLES_DIR))
-            os.mkdir(os.path.join(path, OUTPUT_DIR))
+            _generate_boilerplate(path)
