@@ -21,9 +21,13 @@ def chevette():
 
 
 @click.command()
+@click.option('-f', '--force', is_flag=True, help='Force creation even if PATH already exists.')
 @click.argument('path', type=str)
-def new(path):
-    Chevette.generate_boilerplate(path)
+def new(path, force):
+    """
+    Generates a new chevette boilerplate at the specified PATH
+    """
+    Chevette.generate_boilerplate(path, force)
 
 
 chevette.add_command(new)
