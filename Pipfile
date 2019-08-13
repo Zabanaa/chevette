@@ -13,6 +13,8 @@ python-frontmatter = "*"
 click = "*"
 colorama = "*"
 e1839a8 = {editable = true,path = "."}
+twine = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.7"
