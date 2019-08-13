@@ -1,6 +1,5 @@
 entries/
 public/
-layouts/
 articles/
 __pycache__/
 *.egg-info

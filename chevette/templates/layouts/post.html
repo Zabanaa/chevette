@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="post">
+
+    <header>
+        <h4>Author: {{author}}</h4>
+        <span>Twitter: <a href="{{twitter}}">Twitter</a></span>
+    </header>
+
+    <article>
+        {{content | safe}}        
+    </article>
+
+</div>
+{% endblock %}
