@@ -3,7 +3,7 @@ import sys
 import codecs
 from colorama import Fore, Style
 from shutil import rmtree
-from constants import ARTICLES_DIR, OUTPUT_DIR, TEMPLATES_DIR
+from chevette.constants import ARTICLES_DIR, OUTPUT_DIR, TEMPLATES_DIR
 from jinja2 import Environment, FileSystemLoader
 
 _jinja_env = Environment(
@@ -49,7 +49,10 @@ def render_template_to_file(path, new_file, _vars={}):
 
 def _generate_boilerplate(path):
     print('Generating default folder structure ...')
-    os.mkdir(path)
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
     os.mkdir(os.path.join(path, ARTICLES_DIR))
     os.mkdir(os.path.join(path, OUTPUT_DIR))
     render_template_to_file(path, 'index.md')

@@ -1,17 +1,7 @@
-# use click
-import os
 import click
-from chevette import Chevette
+from chevette.chevette import Chevette
 
-VERSION = '1.0.0'
 
-"""
-    TODO:
-        - parse command line arguments to get the project path
-        - generate a settings file based on certain questions asked by the cli tool
-        - generate a basic index.html template
-        - turn this thing into a class
-"""
 @click.group()
 def chevette():
     """
@@ -28,6 +18,14 @@ def new(path, force):
     Generates a new chevette boilerplate at the specified PATH
     """
     Chevette.generate_boilerplate(path, force)
+
+
+@click.command()
+def build():
+    """
+    Build your blog.
+    """
+    Chevette.build()
 
 
 chevette.add_command(new)

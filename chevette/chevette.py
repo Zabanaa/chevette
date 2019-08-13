@@ -1,4 +1,4 @@
-from utils import (
+from chevette.utils import (
     folder_exists,
     clear_directory,
     print_error_and_exit,
@@ -7,6 +7,13 @@ from utils import (
 
 
 class Chevette(object):
+
+    @classmethod
+    def build():
+        # this is where we take all the posts written in md
+        # parse them into html
+        # shove them in `/public`
+        pass
 
     @classmethod
     def generate_boilerplate(cls, path, force):
