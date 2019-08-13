@@ -40,12 +40,18 @@ def print_error_and_exit(message):
     sys.exit(1)
 
 
+def render_template_to_file(path, new_file, _vars={}):
+    with codecs.open(os.path.join(path, new_file), 'w', 'utf-8') as fd:
+        template = _jinja_env.get_template(f'{new_file}.jinja2')
+        fd.write(template.render(**_vars))
+        fd.close()
+
+
 def _generate_boilerplate(path):
     print('Generating default folder structure ...')
+    os.mkdir(path)
     os.mkdir(os.path.join(path, ARTICLES_DIR))
     os.mkdir(os.path.join(path, OUTPUT_DIR))
-    with codecs.open(os.path.join(path, 'index.html'), 'w', 'utf-8') as fd:
-        template = _jinja_env.get_template('index.html.jinja2')
-        fd.write(template.render())
-        fd.close()
+    render_template_to_file(path, 'index.md')
+    render_template_to_file(path, 'settings.py')
     print('Done !')
