@@ -1,6 +1,9 @@
-from utils import folder_exists, clear_directory, print_error_and_exit, _generate_boilerplate
-import os
-import sys
+from utils import (
+    folder_exists,
+    clear_directory,
+    print_error_and_exit,
+    _generate_boilerplate
+)
 
 
 class Chevette(object):
