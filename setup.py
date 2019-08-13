@@ -15,15 +15,12 @@ setuptools.setup(
     ),
     url="https://github.com/Zabanaa/chevette",
     author="Karim C",
-    email="karim.cheurfi@gmail.com",
+    author_email="karim.cheurfi@gmail.com",
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
-        'License :: WTFPL License',
         'Operating System :: OS Independent',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary'
     ],
