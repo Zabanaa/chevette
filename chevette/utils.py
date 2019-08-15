@@ -1,52 +1,9 @@
 import os
-import sys
 import codecs
-import frontmatter as fm
-import misaka
-from colorama import Fore, Style
 from shutil import rmtree
 from chevette.constants import (
-    ARTICLES_DIR,
-    OUTPUT_DIR,
-    TEMPLATES_DIR,
+    JINJA_ENV
 )
-from jinja2 import Environment, FileSystemLoader
-
-
-_jinja_env = Environment(
-    loader=FileSystemLoader(TEMPLATES_DIR),
-    trim_blocks=True,
-)
-
-
-def _save_article_to_html(rendered_article, filename):
-    with open(os.path.join(OUTPUT_DIR, filename), 'w') as f:
-        f.write(rendered_article)
-
-
-def _generate_html_filename(path):
-    return path.split('/')[1].split('.')[0] + '.html'
-
-
-def _render_article(content, ctx_vars):
-    layout = ctx_vars.get('layout', 'post')
-    template = _jinja_env.get_template(f'layouts/{layout}.html.jinja2')
-    return template.render(content=misaka.html(content), **ctx_vars)
-
-
-def _parse_article(file):
-    article = fm.load(file)
-    return (article.metadata, article.content)
-
-
-def _get_all_articles(path=ARTICLES_DIR):
-
-    return (
-        os.path.join(ARTICLES_DIR, article) 
-        for article in os.listdir(ARTICLES_DIR)
-        if _is_file(os.path.join(ARTICLES_DIR, article))
-        and _is_markdown(article)
-    )
 
 
 def _is_markdown(file):
@@ -75,27 +32,11 @@ def _is_dir(path):
     return os.path.isdir(path)
 
 
-def print_error_and_exit(message):
-    print(Fore.RED + message.strip())
-    print(Style.RESET_ALL)
-    sys.exit(1)
-
-
 def render_template_to_file(path, new_file, _vars={}):
+    # TODO: needs to be broken down into two smaller functions
+    # one that renders he template
+    # the other that saves the file
     with codecs.open(os.path.join(path, new_file), 'w', 'utf-8') as fd:
-        template = _jinja_env.get_template(f'{new_file}.jinja2')
+        template = JINJA_ENV.get_template(f'{new_file}.jinja2')
         fd.write(template.render(**_vars))
         fd.close()
-
-
-def _generate_boilerplate(path):
-    print('Generating default folder structure ...')
-    try:
-        os.mkdir(path)
-    except FileExistsError:
-        pass
-    os.mkdir(os.path.join(path, ARTICLES_DIR))
-    os.mkdir(os.path.join(path, OUTPUT_DIR))
-    render_template_to_file(path, 'index.md')
-    render_template_to_file(path, 'settings.py')
-    print('Done !')
