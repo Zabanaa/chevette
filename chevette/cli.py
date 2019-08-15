@@ -29,6 +29,7 @@ def build():
 
 
 chevette.add_command(new)
+chevette.add_command(build)
 
 if __name__ == "__main__":
     chevette()
