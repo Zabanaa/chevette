@@ -1,4 +1,5 @@
 import os
+from jinja2 import Environment, FileSystemLoader
 
 VERSION = '0.0.1'
 TEMPLATES_DIR = os.path.join(
@@ -6,3 +7,8 @@ TEMPLATES_DIR = os.path.join(
 )
 ARTICLES_DIR = 'articles'
 OUTPUT_DIR = 'public'
+
+JINJA_ENV = Environment(
+    loader=FileSystemLoader(TEMPLATES_DIR),
+    trim_blocks=True,
+)
