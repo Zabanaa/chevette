@@ -17,7 +17,7 @@ def new(path, force):
     """
     Generates a new chevette boilerplate at the specified PATH
     """
-    Chevette.generate_boilerplate(path, force)
+    Chevette.new(path, force)
 
 
 @click.command()
