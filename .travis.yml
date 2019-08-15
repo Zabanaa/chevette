@@ -1,7 +1,7 @@
 language: python 
 python:
   - '3.7'
-
+install: pipenv install
 # this is where we would put a command to run the tests
 
 # tags releases will deploy to the actual pypi.org servers
@@ -12,5 +12,5 @@ deploy:
   user: zabana
   password:
     secure: ZkEV+6iBbQyXq3ir1bxVs+L35wYBjeiHWCFfAiBqpp5XLwrHMBwyyD5sMbNkLLmo0uTacimphy9PJfTEjIm/lVPRHXpOHGCgh5Wa6Tz205WKmXSYJeC1sgmmH1KrDcvZQJw2zhLac1xaMCi/QNeB2/ztzwz2KvR/XKuXKOqPum5H14CeHR8Eq08nxG4PJyRfIJ5kikzrk7hFCTiuH6SXpR5FakmmNhl/e2GO/9y9ldyYpWSB5B9Ncuz58wOg1OxSjsn4vXJv2U3eaIQ8LbCuFcAKr6s/oJsFCUtmEl32Tsb6dlHIYgAvm0ZGeQ6GPkRmfkev7txveeZOH1gwLCxXLvbiMkEcgXjblQp3mrS4Gdyp7wuaJy9vkoczRoE8JJBQ5QGhzGoAtvp3rYdPOZWIdWXO3GV0zepv0CmruzgxxuTXGEAFYRnD4PpuO0H3IJxUQwIFwp4/DLx3rj+1vm1TmtnrxkwNrsTBXTjUS6oOzroFMEOeZ0YkrTz/yBn+CZcufShP86uzVTodzcpxaOwqk+7eZxUB6trIb3732dP0j6lr7zx7b+tUGLcpJeJqzW1tV3ujw7WOH05can0UHXA9xs/P3uTth/qQzWLNWUlOpGX/7Ba4hpf7BbBDVt3T5XIx0tSO5JUmrX3+oleZpYSNuBqMpRwqXxgns+a3zS10Yuc=
-  on:
-    branch: master 
+  branches:
+    only: master 
