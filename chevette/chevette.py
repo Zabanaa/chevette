@@ -1,13 +1,15 @@
+import sys
+import os
+from colorama import Fore, Style
+from chevette.constants import ARTICLES_DIR, OUTPUT_DIR
+from chevette.article import Article
+
 from chevette.utils import (
+    _is_file,
+    _is_markdown,
     folder_exists,
     clear_directory,
-    print_error_and_exit,
-    _generate_boilerplate,
-    _get_all_articles,
-    _parse_article,
-    _render_article,
-    _save_article_to_html,
-    _generate_html_filename
+    render_template_to_file
 )
 
 
@@ -16,24 +18,17 @@ class Chevette(object):
     @classmethod
     def build(cls):
         # TODO: gather all html under os.getcwd() as well (but later)
-        # for now just stick with /articles
+        # for now just stick to /articles
 
-        # 1. gather all .md files under /articles
-        articles = _get_all_articles()
+        articles = cls._get_all_articles()
 
         for article in articles:
-            # 2. parse them
-            metadata, content = _parse_article(article)
-            # 3. render them to html
-            html_article = _render_article(content, metadata)
-            new_filename = _generate_html_filename(article)
-
-            # 4. save them to /public
-            _save_article_to_html(html_article, new_filename)
-
+            article.parse()
+            article.render()
+            article.save_to_html()
 
     @classmethod
-    def generate_boilerplate(cls, path, force):
+    def new(cls, path, force):
         """
         create the basic folder structure necessary
         to the creation of a blog.
@@ -47,7 +42,7 @@ class Chevette(object):
 
             err_msg = f"""
             [Error]: Could not create directory.
-            Path ({path}) Already Exists.
+            Path ({os.path.abspath(path)}) Already Exists.
             Please make sure the directory is empty or use --force
             to overwrite the files.
             """
@@ -56,9 +51,36 @@ class Chevette(object):
                 print(f'Overwriting content inside {path}')
                 clear_directory(path)
                 print('Done !')
-                return _generate_boilerplate(path)
+                return cls._generate_boilerplate(path)
 
-            print_error_and_exit(err_msg)
+            cls._print_error_and_exit(err_msg)
 
         else:
-            _generate_boilerplate(path)
+            cls._generate_boilerplate(path)
+
+    @classmethod
+    def _get_all_articles(cls, path=ARTICLES_DIR):
+        return (
+            Article(os.path.join(ARTICLES_DIR, article))
+            for article in os.listdir(ARTICLES_DIR)
+            if _is_file(os.path.join(ARTICLES_DIR, article))
+            and _is_markdown(article)
+        )
+
+    @classmethod
+    def _print_error_and_exit(cls, message):
+        print(Fore.RED + message.strip())
+        print(Style.RESET_ALL)
+        sys.exit(1)
+
+    @classmethod
+    def _generate_boilerplate(cls, path):
+        print('Generating default folder structure ...')
+        if path != '.':
+            os.mkdir(path)
+
+        os.mkdir(os.path.join(path, ARTICLES_DIR))
+        os.mkdir(os.path.join(path, OUTPUT_DIR))
+        render_template_to_file(path, 'index.md')
+        render_template_to_file(path, 'settings.py')
+        print('Done !')
