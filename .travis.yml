@@ -2,7 +2,7 @@ language: python
 python:
   - '3.7'
 install: pipenv install
-script: pytest -v -s --ignore-warnings
+script: pytest -v -s --disable-warnings
 
 # tags releases will deploy to the actual pypi.org servers
 # master goes to test.pypi.org
