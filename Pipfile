@@ -15,6 +15,7 @@ colorama = "*"
 e1839a8 = {editable = true,path = "."}
 twine = "*"
 wheel = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.7"
