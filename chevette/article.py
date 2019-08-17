@@ -2,6 +2,7 @@ import os
 import misaka as m
 import frontmatter as fm
 from chevette.constants import JINJA_ENV, OUTPUT_DIR
+from chevette.utils import _is_dir
 
 
 class Article(object):
@@ -25,7 +26,14 @@ class Article(object):
         )
 
     def save_to_html(self):
-        with open(os.path.join(OUTPUT_DIR, self.html_filename), 'w') as f:
+        public_articles_dir = os.path.join(OUTPUT_DIR, 'articles')
+        public_article_path = os.path.join(
+            public_articles_dir, self.html_filename
+        )
+        if not _is_dir(public_articles_dir):
+            os.mkdir(public_articles_dir)
+
+        with open(public_article_path, 'w') as f:
             f.write(self.html)
 
     @property

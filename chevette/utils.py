@@ -10,6 +10,11 @@ def _is_markdown(file):
     return file.endswith('.md') or file.endswith('.markdown')
 
 
+def _is_extention_allowed(file):
+    file_ext = file.split('.')[1]
+    return file_ext not in ['py', 'yml', 'yaml']
+
+
 def folder_exists(path):
     return os.path.isdir(path)
 

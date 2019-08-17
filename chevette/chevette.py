@@ -3,10 +3,12 @@ import os
 from colorama import Fore, Style
 from chevette.constants import ARTICLES_DIR, OUTPUT_DIR
 from chevette.article import Article
+from shutil import copy2
 
 from chevette.utils import (
     _is_file,
     _is_markdown,
+    _is_extention_allowed,
     folder_exists,
     clear_directory,
     render_template_to_file
@@ -17,8 +19,15 @@ class Chevette(object):
 
     @classmethod
     def build(cls):
-        # TODO: gather all html under os.getcwd() as well (but later)
-        # for now just stick to /articles
+        # if there's no config file raise a cusom exception
+        # if output dir exists clear it
+        # gather all .md files and .html files and copy them over
+        # copy all files over to /public and render the markdown files that you find
+
+        # 1st copy over all files to /public
+        other_files = cls._get_other_project_files()
+        for file in other_files:
+            copy2(file, OUTPUT_DIR)
 
         articles = cls._get_all_articles()
 
@@ -84,3 +93,12 @@ class Chevette(object):
         render_template_to_file(path, 'index.md')
         render_template_to_file(path, 'settings.py')
         print('Done !')
+
+    @classmethod
+    def _get_other_project_files(cls):
+        cur_dir = os.getcwd()
+        return (
+           os.path.join(cur_dir, f) for f in os.listdir(cur_dir)
+           if _is_file(os.path.join(cur_dir, f))
+           and _is_extention_allowed(f)
+        )
