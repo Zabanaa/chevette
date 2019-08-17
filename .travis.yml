@@ -2,7 +2,7 @@ language: python
 python:
   - '3.7'
 install: pipenv install
-# this is where we would put a command to run the tests
+script: pytest -v -s --ignore-warnings
 
 # tags releases will deploy to the actual pypi.org servers
 # master goes to test.pypi.org
