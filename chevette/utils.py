@@ -2,7 +2,8 @@ import os
 import codecs
 from shutil import rmtree
 from chevette.constants import (
-    JINJA_ENV
+    JINJA_ENV,
+    EXTENSIONS_NOT_ALLOWED
 )
 
 
@@ -12,7 +13,7 @@ def _is_markdown(file):
 
 def _is_extention_allowed(file):
     file_ext = file.split('.')[1]
-    return file_ext not in ['py', 'yml', 'yaml']
+    return file_ext not in EXTENSIONS_NOT_ALLOWED
 
 
 def folder_exists(path):

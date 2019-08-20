@@ -12,3 +12,15 @@ JINJA_ENV = Environment(
     loader=FileSystemLoader(TEMPLATES_DIR),
     trim_blocks=True,
 )
+
+EXTENSIONS_NOT_ALLOWED = [
+    'py',
+    'yml',
+    'yaml'
+    'toml'
+    'ini',
+    'php',
+    'c',
+    'cpp',
+    'go'
+]
