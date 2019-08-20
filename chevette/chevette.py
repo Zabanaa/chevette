@@ -9,6 +9,7 @@ from chevette.utils import (
     _is_file,
     _is_markdown,
     _is_extention_allowed,
+    render_markdown_page,
     folder_exists,
     clear_directory,
     render_template_to_file
@@ -24,15 +25,19 @@ class Chevette(object):
         # gather all .md files and .html files and copy them over
         # copy all files over to /public and render the markdown files that you find
 
-        # 1st copy over all files to /public
         if not folder_exists(OUTPUT_DIR):
             os.mkdir(os.path.join(os.getcwd(), OUTPUT_DIR))
         else:
             clear_directory(OUTPUT_DIR)
 
         other_files = cls._get_other_project_files()
+
+        # 1st copy over all files to /public
         for file in other_files:
-            copy2(file, OUTPUT_DIR)
+            if _is_markdown(file):
+                render_markdown_page(file)
+            else:
+                copy2(file, OUTPUT_DIR)
 
         articles = cls._get_all_articles()
 
