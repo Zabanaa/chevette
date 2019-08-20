@@ -1,8 +1,11 @@
 import os
 import codecs
+import frontmatter as fm
+import misaka as m
 from shutil import rmtree
 from chevette.constants import (
     JINJA_ENV,
+    OUTPUT_DIR,
     EXTENSIONS_NOT_ALLOWED
 )
 
@@ -36,6 +39,42 @@ def _is_file(path):
 
 def _is_dir(path):
     return os.path.isdir(path)
+
+
+def _get_html_filename(path):
+    filename = os.path.basename(path)
+    return os.path.splitext(filename)[0] + '.html'
+
+
+def _render_file_to_html(metadata, content, html_filename):
+
+    cur_dir = os.getcwd()
+    public_path = os.path.join(
+        cur_dir,
+        OUTPUT_DIR,
+        html_filename
+    )
+    content = m.html(content)
+
+    with codecs.open(public_path, 'w', 'utf-8') as fd:
+        layout = metadata.get('layout')
+        template = JINJA_ENV.get_template(f'layouts/{layout}.html.jinja2')
+        fd.write(template.render(
+            content=content,
+            **metadata
+        ))
+        fd.close()
+
+
+def _render_markdown_page(file):
+    html_filename = _get_html_filename(file)
+    metadata, content = _parse_markdown_file(file)
+    _render_file_to_html(metadata, content, html_filename)
+
+
+def _parse_markdown_file(file):
+    parsed_file = fm.load(file)
+    return (parsed_file.metadata, parsed_file.content)
 
 
 def render_template_to_file(path, new_file, _vars={}):
