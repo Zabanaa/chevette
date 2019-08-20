@@ -25,6 +25,9 @@ class Chevette(object):
         # copy all files over to /public and render the markdown files that you find
 
         # 1st copy over all files to /public
+        if not folder_exists(OUTPUT_DIR):
+            os.mkdir(os.path.join(os.getcwd(), OUTPUT_DIR))
+
         other_files = cls._get_other_project_files()
         for file in other_files:
             copy2(file, OUTPUT_DIR)
