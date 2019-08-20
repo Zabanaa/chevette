@@ -13,7 +13,7 @@ JINJA_ENV = Environment(
     trim_blocks=True,
 )
 
-EXTENSIONS_NOT_ALLOWED = [
+EXTENSIONS_NOT_ALLOWED = (
     'py',
     'yml',
     'yaml'
@@ -22,5 +22,5 @@ EXTENSIONS_NOT_ALLOWED = [
     'php',
     'c',
     'cpp',
-    'go'
-]
+    'go',
+)
