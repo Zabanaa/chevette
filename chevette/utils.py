@@ -6,7 +6,6 @@ import misaka as m
 from shutil import rmtree
 from colorama import Fore, Style
 from chevette.constants import (
-    MAIN_JINJA_ENV,
     OUTPUT_DIR,
     EXTENSIONS_NOT_ALLOWED
 )
@@ -90,13 +89,3 @@ def _render_markdown_page(file):
 def _parse_markdown_file(file):
     parsed_file = fm.load(file)
     return (parsed_file.metadata, parsed_file.content)
-
-
-def render_template_to_file(path, new_file, _vars={}):
-    # TODO: needs to be broken down into two smaller functions
-    # one that renders he template
-    # the other that saves the file
-    with codecs.open(os.path.join(path, new_file), 'w', 'utf-8') as fd:
-        template = MAIN_JINJA_ENV.get_template(f'{new_file}.jinja2')
-        fd.write(template.render(**_vars))
-        fd.close()

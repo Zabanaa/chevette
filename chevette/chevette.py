@@ -1,8 +1,12 @@
 import os
-from chevette.constants import ARTICLES_DIR, OUTPUT_DIR, LAYOUTS_DIR
+from chevette.constants import (
+    ARTICLES_DIR,
+    OUTPUT_DIR,
+    LAYOUTS_DIR,
+    TEMPLATES_DIR
+)
 from chevette.article import Article
 from shutil import copy2, copytree
-
 from chevette.utils import (
     _is_file,
     _is_markdown,
@@ -11,7 +15,6 @@ from chevette.utils import (
     folder_exists,
     clear_directory,
     _print_error_and_exit,
-    render_template_to_file
 )
 
 
@@ -84,8 +87,8 @@ class Chevette(object):
         os.mkdir(os.path.join(path, ARTICLES_DIR))
         os.mkdir(os.path.join(path, OUTPUT_DIR))
         copytree(LAYOUTS_DIR, os.path.join(path, 'theme'))
-        render_template_to_file(path, 'index.md')
-        render_template_to_file(path, 'settings.py')
+        copy2(os.path.join(TEMPLATES_DIR, 'index.md'), path)
+        copy2(os.path.join(TEMPLATES_DIR, 'settings.py'), path)
         print('Done !')
 
     def _get_other_project_files():
