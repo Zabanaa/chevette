@@ -1,0 +1,2 @@
+class NoLayoutError(Exception):
+    pass
