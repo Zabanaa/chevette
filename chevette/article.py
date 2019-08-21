@@ -1,8 +1,8 @@
 import os
 import misaka as m
 import frontmatter as fm
-from chevette.constants import JINJA_ENV, OUTPUT_DIR
-from chevette.utils import _is_dir
+from chevette.constants import OUTPUT_DIR, THEME_JINJA_ENV
+from chevette.utils import folder_exists
 
 
 class Article(object):
@@ -20,7 +20,7 @@ class Article(object):
 
     def render(self):
         layout = self.metadata.get('layout', 'post')
-        template = JINJA_ENV.get_template(f'layouts/{layout}.html.jinja2')
+        template = THEME_JINJA_ENV.get_template(f'layouts/{layout}.html.jinja2')
         self.html = template.render(
             content=m.html(self.content), **self.metadata
         )
@@ -30,7 +30,7 @@ class Article(object):
         public_article_path = os.path.join(
             public_articles_dir, self.html_filename
         )
-        if not _is_dir(public_articles_dir):
+        if not folder_exists(public_articles_dir):
             os.mkdir(public_articles_dir)
 
         with open(public_article_path, 'w') as f:
