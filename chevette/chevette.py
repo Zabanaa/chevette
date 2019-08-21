@@ -1,17 +1,16 @@
-import sys
 import os
-from colorama import Fore, Style
-from chevette.constants import ARTICLES_DIR, OUTPUT_DIR
+from chevette.constants import ARTICLES_DIR, OUTPUT_DIR, LAYOUTS_DIR
 from chevette.article import Article
-from shutil import copy2
+from shutil import copy2, copytree
 
 from chevette.utils import (
     _is_file,
     _is_markdown,
     _is_extention_allowed,
-    render_markdown_page,
+    _render_markdown_page,
     folder_exists,
     clear_directory,
+    _print_error_and_exit,
     render_template_to_file
 )
 
@@ -20,22 +19,14 @@ class Chevette(object):
 
     @classmethod
     def build(cls):
-        # if there's no config file raise a cusom exception
-        # if output dir exists clear it
-        # gather all .md files and .html files and copy them over
-        # copy all files over to /public and render the markdown files that you find
 
-        if not folder_exists(OUTPUT_DIR):
-            os.mkdir(os.path.join(os.getcwd(), OUTPUT_DIR))
-        else:
-            clear_directory(OUTPUT_DIR)
+        cls._create_output_dir()
 
         other_files = cls._get_other_project_files()
 
-        # 1st copy over all files to /public
         for file in other_files:
             if _is_markdown(file):
-                render_markdown_page(file)
+                _render_markdown_page(file)
             else:
                 copy2(file, OUTPUT_DIR)
 
@@ -72,12 +63,11 @@ class Chevette(object):
                 print('Done !')
                 return cls._generate_boilerplate(path)
 
-            cls._print_error_and_exit(err_msg)
+            _print_error_and_exit(err_msg)
 
         else:
             cls._generate_boilerplate(path)
 
-    @classmethod
     def _get_all_articles(cls, path=ARTICLES_DIR):
         return (
             Article(os.path.join(ARTICLES_DIR, article))
@@ -86,29 +76,28 @@ class Chevette(object):
             and _is_markdown(article)
         )
 
-    @classmethod
-    def _print_error_and_exit(cls, message):
-        print(Fore.RED + message.strip())
-        print(Style.RESET_ALL)
-        sys.exit(1)
-
-    @classmethod
-    def _generate_boilerplate(cls, path):
+    def _generate_boilerplate(path):
         print('Generating default folder structure ...')
         if path != '.':
             os.mkdir(path)
 
         os.mkdir(os.path.join(path, ARTICLES_DIR))
         os.mkdir(os.path.join(path, OUTPUT_DIR))
+        copytree(LAYOUTS_DIR, os.path.join(path, 'theme'))
         render_template_to_file(path, 'index.md')
         render_template_to_file(path, 'settings.py')
         print('Done !')
 
-    @classmethod
-    def _get_other_project_files(cls):
+    def _get_other_project_files():
         cur_dir = os.getcwd()
         return (
            os.path.join(cur_dir, f) for f in os.listdir(cur_dir)
            if _is_file(os.path.join(cur_dir, f))
            and _is_extention_allowed(f)
         )
+
+    def _create_output_dir():
+        if not folder_exists(OUTPUT_DIR):
+            os.mkdir(os.path.join(os.getcwd(), OUTPUT_DIR))
+        else:
+            clear_directory(OUTPUT_DIR)
