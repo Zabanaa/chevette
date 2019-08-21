@@ -1,5 +1,5 @@
-import os
 from jinja2 import Environment, FileSystemLoader
+import os
 
 VERSION = '0.0.1'
 TEMPLATES_DIR = os.path.join(
@@ -7,10 +7,15 @@ TEMPLATES_DIR = os.path.join(
 )
 ARTICLES_DIR = 'articles'
 OUTPUT_DIR = 'public'
-
-JINJA_ENV = Environment(
+LAYOUTS_DIR = os.path.join(TEMPLATES_DIR, 'layouts')
+THEME_DIR = os.path.join(os.getcwd(), 'theme')
+MAIN_JINJA_ENV = Environment(
     loader=FileSystemLoader(TEMPLATES_DIR),
-    trim_blocks=True,
+    trim_blocks=True
+)
+THEME_JINJA_ENV = Environment(
+    loader=FileSystemLoader(THEME_DIR),
+    trim_blocks=True
 )
 
 EXTENSIONS_NOT_ALLOWED = (
@@ -23,4 +28,6 @@ EXTENSIONS_NOT_ALLOWED = (
     'c',
     'cpp',
     'go',
+    'lock',
+    'json'
 )
