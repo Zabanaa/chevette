@@ -1,6 +1,6 @@
 ---
 
-layout: home
+layout: base
 ---
 
 # Hello and welcome !
