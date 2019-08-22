@@ -10,6 +10,7 @@ from chevette.constants import (
     OUTPUT_DIR,
     EXTENSIONS_NOT_ALLOWED
 )
+from jinja2.exceptions import TemplateNotFound
 
 
 def _is_markdown(file):
@@ -73,12 +74,23 @@ def _render_file_to_html(metadata, content, html_filename, file):
             """
             _print_error_and_exit(err_msg)
 
-        template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
-        fd.write(template.render(
-            content=content,
-            **metadata
-        ))
-        fd.close()
+        try:
+            template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
+        except TemplateNotFound as e:
+            err_msg = f"""
+            [Error]
+            Unable to compile {file}.
+            Could not find the following layout template: {e.name}.
+            Make sure the spelling is correct or that a file named {e.name}
+            sits under the theme directory.
+            """
+            _print_error_and_exit(err_msg)
+        else:
+            fd.write(template.render(
+                content=content,
+                **metadata
+            ))
+            fd.close()
 
 
 def _render_markdown_page(file):
