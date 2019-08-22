@@ -6,6 +6,7 @@ import misaka as m
 from shutil import rmtree
 from colorama import Fore, Style
 from chevette.constants import (
+    THEME_JINJA_ENV,
     OUTPUT_DIR,
     EXTENSIONS_NOT_ALLOWED
 )
@@ -72,7 +73,7 @@ def _render_file_to_html(metadata, content, html_filename, file):
             """
             _print_error_and_exit(err_msg)
 
-        template = JINJA_ENV.get_template(f'layouts/{layout}.html.jinja2')
+        template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
         fd.write(template.render(
             content=content,
             **metadata
