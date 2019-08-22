@@ -1,6 +1,5 @@
 entries/
 public/
-articles/
 __pycache__/
 *.egg-info
 build/
