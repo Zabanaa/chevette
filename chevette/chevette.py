@@ -2,7 +2,6 @@ import os
 from chevette.constants import (
     ARTICLES_DIR,
     OUTPUT_DIR,
-    LAYOUTS_DIR,
     TEMPLATES_DIR
 )
 from chevette.article import Article
@@ -71,7 +70,7 @@ class Chevette(object):
         else:
             cls._generate_boilerplate(path)
 
-    def _get_all_articles(cls, path=ARTICLES_DIR):
+    def _get_all_articles(path=ARTICLES_DIR):
         return (
             Article(os.path.join(ARTICLES_DIR, article))
             for article in os.listdir(ARTICLES_DIR)
@@ -81,14 +80,19 @@ class Chevette(object):
 
     def _generate_boilerplate(path):
         print('Generating default folder structure ...')
+
         if path != '.':
             os.mkdir(path)
 
-        os.mkdir(os.path.join(path, ARTICLES_DIR))
-        os.mkdir(os.path.join(path, OUTPUT_DIR))
-        copytree(LAYOUTS_DIR, os.path.join(path, 'theme'))
-        copy2(os.path.join(TEMPLATES_DIR, 'index.md'), path)
-        copy2(os.path.join(TEMPLATES_DIR, 'settings.py'), path)
+        for fd in os.listdir(TEMPLATES_DIR):
+            src = os.path.join(TEMPLATES_DIR, fd)
+            if _is_file(src):
+                copy2(src, path)
+
+            if folder_exists(src):
+                dest = os.path.join(path, fd)
+                copytree(src, dest)
+
         print('Done !')
 
     def _get_other_project_files():
