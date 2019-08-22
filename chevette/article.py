@@ -20,7 +20,7 @@ class Article(object):
 
     def render(self):
         layout = self.metadata.get('layout', 'post')
-        template = THEME_JINJA_ENV.get_template(f'layouts/{layout}.html.jinja2')
+        template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
         self.html = template.render(
             content=m.html(self.content), **self.metadata
         )
