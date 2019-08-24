@@ -1,9 +1,20 @@
+import pytest
 from chevette.utils import (
     _is_markdown,
     _is_extention_allowed,
-    _get_html_filename
+    _get_html_filename,
+    _print_error_and_exit,
+    folder_exists,
+    clear_directory,
+    _is_file,
 )
 from chevette.constants import EXTENSIONS_NOT_ALLOWED
+
+
+def escape_ansi(line):
+    import re
+    ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+    return ansi_escape.sub('', line)
 
 
 def test_is_markdown():
@@ -30,39 +41,32 @@ def test_get_html_filename():
     assert html_filename_relative_path == filename + '.html'
 
 
-# for the following tests, you can simply create a bunch of fake directories
-# with files, without having to resort to mocks, for some tests however you
-# might have to use fixtures
-# Lookup how pelican does it
+def test_print_error_and_exit(capsys):
+    error_message = 'Some error message'
+    with pytest.raises(SystemExit):
+        _print_error_and_exit(error_message)
+    captured = capsys.readouterr()
+    escaped_output = escape_ansi(captured.out)
+    assert escaped_output.rstrip() == error_message
 
 
-def test_print_error_and_exit():
-    # make sure sys.exit was called
-    # make sure that print was called with the message
-    pass
+def test_folder_exists(temp_dir):
+    assert folder_exists(temp_dir.path) == True
+    assert folder_exists(temp_dir.file1) == False
 
 
-def test_folder_exists():
-    # create a folder with some files in it
-    # run the code against it
-    # remove the folder afterwards
-    pass
+def test_clear_directory(temp_dir):
+    import os
+    full_dir_content_count = len(os.listdir(temp_dir.path))
+    assert full_dir_content_count != 0
+    clear_directory(temp_dir.path)
+    empty_dir_content_count = len(os.listdir(temp_dir.path))
+    assert empty_dir_content_count == 0
 
 
-def test_clear_directory():
-    # create a folder with some files in it
-    # check the lenght of the content
-    # call clear_directory against it
-    # check the length again and make sure it's 0
-    # remove the directory again
-    pass
-
-
-def test_is_file():
-    # give a file path in test_data
-    # run the code against it
-    # try a failing case make sure it returns false
-    pass
+def test_is_file(temp_dir):
+    assert _is_file(temp_dir.file1) == True
+    assert _is_file(temp_dir.path) == False
 
 
 def test_parse_markdown_file():
@@ -70,5 +74,5 @@ def test_parse_markdown_file():
     # with front matter content
     # make sure the function returns a tuple containing a dict
     # and a string
-    # think about potentially failing cases
+    # think about potentially failing cases (like if the file is empty)
     pass
