@@ -1,8 +1,7 @@
 import os
 import misaka as m
 import frontmatter as fm
-from chevette.constants import OUTPUT_DIR, THEME_JINJA_ENV
-from chevette.utils import folder_exists, _print_error_and_exit
+from chevette.constants import THEME_JINJA_ENV
 from jinja2.exceptions import TemplateNotFound
 
 
@@ -37,21 +36,6 @@ class MarkdownDocument(object):
                 content=m.html(self.content), **self.metadata
             )
 
-    def save_to_html(self):
-        if self.is_page:
-            output_path = os.path.join(OUTPUT_DIR, self.html_filename)
-        else:
-            public_articles_dir = os.path.join(OUTPUT_DIR, 'articles')
-            output_path = os.path.join(
-                public_articles_dir, self.html_filename
-            )
-            if not folder_exists(public_articles_dir):
-                os.mkdir(public_articles_dir)
-
-        with open(output_path, 'w') as f:
-            f.write(self.html)
-
-    @property
     def html_filename(self):
         filename, _ = os.path.splitext(os.path.basename(self.path))
         return f'{filename}.html'
