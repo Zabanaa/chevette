@@ -53,4 +53,5 @@ class MarkdownDocument(object):
 
     @property
     def html_filename(self):
-        return self.path.split('/')[1].split('.')[0] + '.html'
+        filename, _ = os.path.splitext(os.path.basename(self.path))
+        return f'{filename}.html'
