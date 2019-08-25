@@ -6,13 +6,13 @@ from chevette.utils import folder_exists, _print_error_and_exit
 from jinja2.exceptions import TemplateNotFound
 
 
-class Article(object):
+class MarkdownDocument(object):
 
-    def __init__(self, path):
-        self.path = path
-        self.metadata = None
-        self.content = None
-        self.html = None
+    path = None
+    is_page = False
+    metadata = None
+    content = None
+    html_filename = None
 
     def parse(self):
         _article = fm.load(self.path)
@@ -38,14 +38,17 @@ class Article(object):
             )
 
     def save_to_html(self):
-        public_articles_dir = os.path.join(OUTPUT_DIR, 'articles')
-        public_article_path = os.path.join(
-            public_articles_dir, self.html_filename
-        )
-        if not folder_exists(public_articles_dir):
-            os.mkdir(public_articles_dir)
+        if self.is_page:
+            output_path = os.path.join(OUTPUT_DIR, self.html_filename)
+        else:
+            public_articles_dir = os.path.join(OUTPUT_DIR, 'articles')
+            output_path = os.path.join(
+                public_articles_dir, self.html_filename
+            )
+            if not folder_exists(public_articles_dir):
+                os.mkdir(public_articles_dir)
 
-        with open(public_article_path, 'w') as f:
+        with open(output_path, 'w') as f:
             f.write(self.html)
 
     @property

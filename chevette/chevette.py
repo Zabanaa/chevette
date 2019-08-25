@@ -4,13 +4,12 @@ from chevette.constants import (
     OUTPUT_DIR,
     TEMPLATES_DIR
 )
-from chevette.article import Article
+from chevette.markdown import Page, Article
 from shutil import copy2, copytree
 from chevette.utils import (
     _is_file,
     _is_markdown,
     _is_extention_allowed,
-    _render_markdown_page,
     folder_exists,
     clear_directory,
     _print_error_and_exit,
@@ -24,11 +23,14 @@ class Chevette(object):
 
         cls._create_output_dir()
 
-        other_files = cls._get_other_project_files()
+        other_files = cls._get_pages_and_other_files()
 
         for file in other_files:
             if _is_markdown(file):
-                _render_markdown_page(file)
+                page = Page(file)
+                page.parse()
+                page.render()
+                page.save_to_html()
             else:
                 copy2(file, OUTPUT_DIR)
 
@@ -72,7 +74,7 @@ class Chevette(object):
 
     def _get_all_articles(path=ARTICLES_DIR):
         return (
-            Article(os.path.join(ARTICLES_DIR, article))
+            Article(os.path.abspath(os.path.join(ARTICLES_DIR, article)))
             for article in os.listdir(ARTICLES_DIR)
             if _is_file(os.path.join(ARTICLES_DIR, article))
             and _is_markdown(article)
@@ -95,7 +97,7 @@ class Chevette(object):
 
         print('Done !')
 
-    def _get_other_project_files():
+    def _get_pages_and_other_files():
         cur_dir = os.getcwd()
         return (
            os.path.join(cur_dir, f) for f in os.listdir(cur_dir)
