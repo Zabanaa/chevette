@@ -7,12 +7,12 @@ from chevette.utils.constants import (
 from chevette.markdown import Page, Article
 from shutil import copy2, copytree
 from chevette.utils.helpers import (
-    _is_file,
-    _is_markdown,
-    _is_extention_allowed,
+    is_file,
+    is_markdown,
+    is_extention_allowed,
     folder_exists,
     clear_directory,
-    _print_error_and_exit,
+    print_error_and_exit,
 )
 
 
@@ -26,7 +26,7 @@ class Chevette(object):
         other_files = cls._get_pages_and_other_files()
 
         for file in other_files:
-            if _is_markdown(file):
+            if is_markdown(file):
                 page = Page(file)
                 page.parse()
                 page.render()
@@ -67,7 +67,7 @@ class Chevette(object):
                 print('Done !')
                 return cls._generate_boilerplate(path)
 
-            _print_error_and_exit(err_msg)
+            print_error_and_exit(err_msg)
 
         else:
             cls._generate_boilerplate(path)
@@ -76,8 +76,8 @@ class Chevette(object):
         return (
             Article(os.path.abspath(os.path.join(ARTICLES_DIR, article)))
             for article in os.listdir(ARTICLES_DIR)
-            if _is_file(os.path.join(ARTICLES_DIR, article))
-            and _is_markdown(article)
+            if is_file(os.path.join(ARTICLES_DIR, article))
+            and is_markdown(article)
         )
 
     def _generate_boilerplate(path):
@@ -88,7 +88,7 @@ class Chevette(object):
 
         for fd in os.listdir(TEMPLATES_DIR):
             src = os.path.join(TEMPLATES_DIR, fd)
-            if _is_file(src):
+            if is_file(src):
                 copy2(src, path)
 
             if folder_exists(src):
@@ -101,8 +101,8 @@ class Chevette(object):
         cur_dir = os.getcwd()
         return (
            os.path.join(cur_dir, f) for f in os.listdir(cur_dir)
-           if _is_file(os.path.join(cur_dir, f))
-           and _is_extention_allowed(f)
+           if is_file(os.path.join(cur_dir, f))
+           and is_extention_allowed(f)
         )
 
     def _create_output_dir():

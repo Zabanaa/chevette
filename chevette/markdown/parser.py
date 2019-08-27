@@ -2,7 +2,7 @@ import os
 import misaka as m
 import frontmatter as fm
 from chevette.utils.constants import THEME_JINJA_ENV
-from chevette.utils.helpers import _print_error_and_exit
+from chevette.utils.helpers import print_error_and_exit
 from jinja2.exceptions import TemplateNotFound
 
 
