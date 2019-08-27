@@ -8,7 +8,7 @@ from chevette.utils.helpers import (
     clear_directory,
     _is_file,
 )
-from chevette.constants import EXTENSIONS_NOT_ALLOWED
+from chevette.utils.constants import EXTENSIONS_NOT_ALLOWED
 
 
 def escape_ansi(line):
