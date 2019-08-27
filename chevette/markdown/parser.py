@@ -1,7 +1,8 @@
 import os
 import misaka as m
 import frontmatter as fm
-from chevette.constants import THEME_JINJA_ENV
+from chevette.utils.constants import THEME_JINJA_ENV
+from chevette.utils.helpers import _print_error_and_exit
 from jinja2.exceptions import TemplateNotFound
 
 
@@ -36,6 +37,7 @@ class MarkdownDocument(object):
                 content=m.html(self.content), **self.metadata
             )
 
+    @property
     def html_filename(self):
         filename, _ = os.path.splitext(os.path.basename(self.path))
         return f'{filename}.html'

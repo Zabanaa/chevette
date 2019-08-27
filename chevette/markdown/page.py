@@ -1,5 +1,5 @@
 import os
-from chevette.constants import OUTPUT_DIR
+from chevette.utils.constants import OUTPUT_DIR
 from .parser import MarkdownDocument
 
 

@@ -1,7 +1,7 @@
 from .parser import MarkdownDocument
 import os
-from chevette.constants import OUTPUT_DIR
-from chevette.utils import folder_exists
+from chevette.utils.constants import OUTPUT_DIR
+from chevette.utils.helpers import folder_exists
 
 
 class Article(MarkdownDocument):

@@ -5,7 +5,7 @@ import frontmatter as fm
 import misaka as m
 from shutil import rmtree
 from colorama import Fore, Style
-from chevette.constants import (
+from .constants import (
     THEME_JINJA_ENV,
     OUTPUT_DIR,
     EXTENSIONS_NOT_ALLOWED

@@ -1,14 +1,17 @@
 from jinja2 import Environment, FileSystemLoader
-import os
+from os import getcwd
+from os.path import dirname, abspath, join
 
+
+CUR_DIR = getcwd()
 VERSION = '0.0.1'
-TEMPLATES_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'templates'
+TEMPLATES_DIR = join(
+    dirname(dirname(abspath(__file__))), 'templates'
 )
 ARTICLES_DIR = 'articles'
-OUTPUT_DIR = 'public'
-LAYOUTS_DIR = os.path.join(TEMPLATES_DIR, 'layouts')
-THEME_DIR = os.path.join(os.getcwd(), 'theme')
+OUTPUT_DIR = join(CUR_DIR, 'public')
+LAYOUTS_DIR = join(TEMPLATES_DIR, 'layouts')
+THEME_DIR = join(CUR_DIR, 'theme')
 THEME_JINJA_ENV = Environment(
     loader=FileSystemLoader(THEME_DIR),
     trim_blocks=True

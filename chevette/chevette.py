@@ -1,12 +1,12 @@
 import os
-from chevette.constants import (
+from chevette.utils.constants import (
     ARTICLES_DIR,
     OUTPUT_DIR,
     TEMPLATES_DIR
 )
 from chevette.markdown import Page, Article
 from shutil import copy2, copytree
-from chevette.utils import (
+from chevette.utils.helpers import (
     _is_file,
     _is_markdown,
     _is_extention_allowed,

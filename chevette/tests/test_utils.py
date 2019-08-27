@@ -1,5 +1,5 @@
 import pytest
-from chevette.utils import (
+from chevette.utils.helpers import (
     _is_markdown,
     _is_extention_allowed,
     _get_html_filename,
