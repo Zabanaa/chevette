@@ -9,7 +9,7 @@ class Page(MarkdownDocument):
         self.path = path
         self.is_page = True
 
-    def save_to_html(self):
+    def _save_to_html(self):
         output_path = os.path.join(OUTPUT_DIR, self.html_filename)
 
         with open(output_path, 'w') as f:

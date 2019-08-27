@@ -9,7 +9,7 @@ class Article(MarkdownDocument):
     def __init__(self, path):
         self.path = path
 
-    def save_to_html(self):
+    def _save_to_html(self):
         public_articles_dir = os.path.join(OUTPUT_DIR, 'articles')
         output_path = os.path.join(
             public_articles_dir, self.html_filename

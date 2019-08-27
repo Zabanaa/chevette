@@ -28,18 +28,14 @@ class Chevette(object):
         for file in other_files:
             if is_markdown(file):
                 page = Page(file)
-                page.parse()
-                page.render()
-                page.save_to_html()
+                page.render_html()
             else:
                 copy2(file, OUTPUT_DIR)
 
         articles = cls._get_all_articles()
 
         for article in articles:
-            article.parse()
-            article.render()
-            article.save_to_html()
+            article.render_html()
 
     @classmethod
     def new(cls, path, force):

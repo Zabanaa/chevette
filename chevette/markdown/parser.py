@@ -14,12 +14,12 @@ class MarkdownDocument(object):
     content = None
     html_filename = None
 
-    def parse(self):
+    def _parse(self):
         _article = fm.load(self.path)
         self.metadata = _article.metadata
         self.content = _article.content
 
-    def render(self):
+    def _render(self):
         layout = self.metadata.get('layout', 'post')
         try:
             template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
@@ -31,11 +31,16 @@ class MarkdownDocument(object):
             Make sure the spelling is correct or that a file named {e.name}
             sits under the theme directory.
             """
-            _print_error_and_exit(err_msg)
+            print_error_and_exit(err_msg)
         else:
             self.html = template.render(
                 content=m.html(self.content), **self.metadata
             )
+
+    def render_html(self):
+        self._parse()
+        self._render()
+        self._save_to_html()
 
     @property
     def html_filename(self):
