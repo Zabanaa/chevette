@@ -8,6 +8,7 @@ VERSION = '0.0.1'
 TEMPLATES_DIR = join(
     dirname(dirname(abspath(__file__))), 'templates'
 )
+SITE_CONFIG = join(CUR_DIR, 'settings.py')
 ARTICLES_DIR = 'articles'
 OUTPUT_DIR = join(CUR_DIR, 'public')
 LAYOUTS_DIR = join(TEMPLATES_DIR, 'layouts')
