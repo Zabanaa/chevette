@@ -1,4 +1,7 @@
 import os
+import inspect
+from importlib.machinery import SourceFileLoader
+from chevette.exceptions import NoConfigError
 from chevette.utils.constants import (
     ARTICLES_DIR,
     OUTPUT_DIR,
@@ -21,6 +24,11 @@ class Chevette(object):
     @classmethod
     def build(cls):
 
+        try:
+            site_config = cls._load_config_file()
+        except NoConfigError as e:
+            print_error_and_exit(e.error_msg)
+
         cls._create_output_dir()
 
         other_files = cls._get_pages_and_other_files()
@@ -28,14 +36,14 @@ class Chevette(object):
         for file in other_files:
             if is_markdown(file):
                 page = Page(file)
-                page.render_html()
+                page.render_html(site_config)
             else:
                 copy2(file, OUTPUT_DIR)
 
         articles = cls._get_all_articles()
 
         for article in articles:
-            article.render_html()
+            article.render_html(site_config)
 
     @classmethod
     def new(cls, path, force):
@@ -106,3 +114,17 @@ class Chevette(object):
             os.mkdir(os.path.join(os.getcwd(), OUTPUT_DIR))
         else:
             clear_directory(OUTPUT_DIR)
+
+    def _load_config_file():
+        config_path = os.path.join(os.getcwd(), 'settings.py')
+        if not is_file(config_path):
+            raise NoConfigError
+        else:
+            config_module = SourceFileLoader('config', config_path).load_module()
+            site_config = {'site': {}}
+            config_settings = [
+                (k.lower(), v) for k, v in inspect.getmembers(config_module)
+                if k.isupper()
+            ]
+            site_config['site'].update(config_settings)
+            return site_config

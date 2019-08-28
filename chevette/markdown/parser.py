@@ -19,8 +19,9 @@ class MarkdownDocument(object):
         self.metadata = _article.metadata
         self.content = _article.content
 
-    def _render(self):
+    def _render(self, config):
         layout = self.metadata.get('layout', 'post')
+        config = {**config, **self.metadata}
         try:
             template = THEME_JINJA_ENV.get_template(f'{layout}.html.jinja2')
         except TemplateNotFound as e:
@@ -34,12 +35,12 @@ class MarkdownDocument(object):
             print_error_and_exit(err_msg)
         else:
             self.html = template.render(
-                content=m.html(self.content), **self.metadata
+                content=m.html(self.content), **config
             )
 
-    def render_html(self):
+    def render_html(self, site_config):
         self._parse()
-        self._render()
+        self._render(site_config)
         self._save_to_html()
 
     @property
