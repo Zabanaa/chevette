@@ -1,5 +1,5 @@
 import os
-from chevette.server.server import ChevetteServer, ChevetteRequestHandler
+from chevette.server.server import ChevetteServer
 from chevette.exceptions import NoConfigError
 from chevette.utils.constants import (
     ARTICLES_DIR,
@@ -26,14 +26,14 @@ class Chevette(object):
 
         try:
             cls._check_config_file()
-        except NoConfigError:
+        except NoConfigError as e:
             print_error_and_exit(e.error_msg)
 
         try:
             config = cls._load_config()
             port = config['site'].get('port', 8080)
             print(f'Starting server on localhost using port {port}...')
-            httpd = ChevetteServer('127.0.0.1', port)
+            httpd = ChevetteServer(config, '127.0.0.1', port)
             print('Running server ...')
             httpd.serve_forever()
         except KeyboardInterrupt:
