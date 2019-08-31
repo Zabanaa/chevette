@@ -28,8 +28,17 @@ def build():
     Chevette.build()
 
 
+@click.command()
+def serve():
+    """
+    Start a server with your generated site
+    """
+    Chevette.serve()
+
+
 chevette.add_command(new)
 chevette.add_command(build)
+chevette.add_command(serve)
 
 if __name__ == "__main__":
     chevette()

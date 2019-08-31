@@ -1,4 +1,5 @@
 import os
+from chevette.server.server import ChevetteServer, ChevetteRequestHandler
 from chevette.exceptions import NoConfigError
 from chevette.utils.constants import (
     ARTICLES_DIR,
@@ -19,6 +20,20 @@ from chevette.utils.helpers import (
 
 
 class Chevette(object):
+
+    @classmethod
+    def serve(cls):
+
+        try:
+
+            print('Starting server on PORT 8080 ...')
+            server_address = ('127.0.0.1', 8080)
+            httpd = ChevetteServer(server_address, ChevetteRequestHandler)
+            print('Running server ...')
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print('\nShutting down server ...')
+            httpd.socket.close()
 
     @classmethod
     def build(cls):
