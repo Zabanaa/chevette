@@ -12,4 +12,10 @@ class ChevetteRequestHandler(SimpleHTTPRequestHandler):
 
 
 class ChevetteServer(HTTPServer):
-    pass
+
+    def __init__(self, address, port):
+        HTTPServer.__init__(
+            self,
+            (address, port),
+            ChevetteRequestHandler
+        )

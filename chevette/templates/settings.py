@@ -10,3 +10,4 @@ BASE_URL = '/'
 SITE_URL = 'mysite.xyz'
 TWITTER_USERNAME = '@zabanaa_'
 GITHUB_USERNAME = 'zabanaa'
+PORT = 93100

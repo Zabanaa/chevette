@@ -25,10 +25,15 @@ class Chevette(object):
     def serve(cls):
 
         try:
+            cls._check_config_file()
+        except NoConfigError:
+            print_error_and_exit(e.error_msg)
 
-            print('Starting server on PORT 8080 ...')
-            server_address = ('127.0.0.1', 8080)
-            httpd = ChevetteServer(server_address, ChevetteRequestHandler)
+        try:
+            config = cls._load_config()
+            port = config['site'].get('port', 8080)
+            print(f'Starting server on localhost using port {port}...')
+            httpd = ChevetteServer('127.0.0.1', port)
             print('Running server ...')
             httpd.serve_forever()
         except KeyboardInterrupt:
@@ -42,22 +47,22 @@ class Chevette(object):
             cls._check_config_file()
         except NoConfigError as e:
             print_error_and_exit(e.error_msg)
+        else:
+            cls._create_output_dir()
 
-        cls._create_output_dir()
+            other_files = cls._get_pages_and_other_files()
 
-        other_files = cls._get_pages_and_other_files()
+            for file in other_files:
+                if is_markdown(file):
+                    page = Page(file)
+                    page.render_html()
+                else:
+                    copy2(file, OUTPUT_DIR)
 
-        for file in other_files:
-            if is_markdown(file):
-                page = Page(file)
-                page.render_html()
-            else:
-                copy2(file, OUTPUT_DIR)
+            articles = cls._get_all_articles()
 
-        articles = cls._get_all_articles()
-
-        for article in articles:
-            article.render_html()
+            for article in articles:
+                article.render_html()
 
     @classmethod
     def new(cls, path, force):
@@ -132,3 +137,16 @@ class Chevette(object):
     def _check_config_file():
         if not is_file(SITE_CONFIG):
             raise NoConfigError
+
+    def _load_config():
+        from importlib.machinery import SourceFileLoader
+        import inspect
+
+        config_module = SourceFileLoader('config', SITE_CONFIG).load_module()
+        site_config = {'site': {}}
+        config_settings = [
+            (k.lower(), v) for k, v in inspect.getmembers(config_module)
+            if k.isupper()
+        ]
+        site_config['site'].update(config_settings)
+        return site_config
