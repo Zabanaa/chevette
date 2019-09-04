@@ -1,2 +1,2 @@
-from .article import Article
-from .page import Page
+from .article import Article # noqa F401
+from .page import Page # noqa F401

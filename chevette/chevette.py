@@ -100,7 +100,7 @@ class Chevette(object):
             Article(os.path.abspath(os.path.join(ARTICLES_DIR, article)))
             for article in os.listdir(ARTICLES_DIR)
             if is_file(os.path.join(ARTICLES_DIR, article))
-            and is_markdown(article)
+            and is_markdown(article) # noqa W503
         )
 
     def _generate_boilerplate(path):
@@ -123,9 +123,9 @@ class Chevette(object):
     def _get_pages_and_other_files():
         cur_dir = os.getcwd()
         return (
-           os.path.join(cur_dir, f) for f in os.listdir(cur_dir)
+           os.path.join(cur_dir, f) for f in os.listdir(cur_dir) # noqa E121
            if is_file(os.path.join(cur_dir, f))
-           and is_extention_allowed(f)
+           and is_extention_allowed(f) # noqa W503
         )
 
     def _create_output_dir():

@@ -11,7 +11,7 @@ def chevette():
 
 
 @click.command()
-@click.option('-f', '--force', is_flag=True, help='Force creation even if PATH already exists.')
+@click.option('-f', '--force', is_flag=True, help='Force creation even if PATH already exists.') # noqa E501
 @click.argument('path', type=str)
 def new(path, force):
     """
