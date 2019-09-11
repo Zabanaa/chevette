@@ -10,7 +10,7 @@ _Note: the project is currently an alpha release._
 _There are still tests that need to be performed so certain functionality might not be fully stable._
 
 ## Installation
-Installation is fairly straightforward. Make sure you have either `pip` or `pipenv` installed on your system and run the following command: 
+Installation is fairly straightforward. Make sure you have either `pip` or `pipenv` installed on your system and run the following command:
 
 ```bash
 pip install chevette
@@ -35,7 +35,7 @@ This will generate a basic boilerplate project for your site (Including template
 
 ### Build the blog
 
-To build your blog (ie: convert all your markdown posts to html): 
+To build your blog (ie: convert all your markdown posts to html):
 
 1. Navigate to the project directory (if you're not already there)
 
@@ -44,7 +44,7 @@ cd /path/to/your/project/directory
 ```
 2. Run the `build` command
 ```bash
-chevette build    
+chevette build
 ```
 This will generate all the necessary html files (including pages and other assets) and place them in a directory called `public` within the project directory.
 
@@ -78,13 +78,15 @@ As I've mentioned in the beginning of this README, chevette is still in its infa
 * Various performance tweakings
 * A `publish` command as can be seen in projects like hyde or hugo
 * Tidying up the codebase
+* Compilation of css and javascript assets
 * many more as we think of them
+
 
 ---
 
 ## Issues and contributing
 
-If you come across this project and you either feel inclined to add your contribution or simply want to report a bug, the best way to so is through github issues. 
+If you come across this project and you either feel inclined to add your contribution or simply want to report a bug, the best way to so is through github issues.
 
 
 
