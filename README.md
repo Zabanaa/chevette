@@ -63,7 +63,7 @@ cd /path/to/your/project/directory/public
 chevette serve
 ```
 
-A server will be launched and which will be accessible at `localhost:9310`
+A server will be launched which will be accessible at `localhost:9310`
 
 ---
 
