@@ -4,10 +4,13 @@ Version 0.1.0
 
 Chevette is a static blog engine written in Python. It presently only supports version 3.5 and up.
 There are currently no plans to add compatibility to previous versions although efforts from other contributors are most welcome.
-_Note: the project is currently an alpha release. There are still tests that need to written so certain functionality might not be 100% stable._
+
+
+_Note: the project is currently an alpha release._
+_There are still tests that need to be performed so certain functionality might not be fully stable._
 
 ## Installation
-Installation is fairly straightforward. Simply make sure you have either `pip` or `pipenv` installed on your system and run the following command.
+Installation is fairly straightforward. Make sure you have either `pip` or `pipenv` installed on your system and run the following command: 
 
 ```bash
 pip install chevette
@@ -60,11 +63,12 @@ cd /path/to/your/project/directory/public
 chevette serve
 ```
 
-A server will be launched and is accessible at `localhost:9310`
+A server will be launched and which will be accessible at `localhost:9310`
+
 ---
 
 ## Roadmap
-As I've mentioned in the beginning of this file, chevette is still in its infancy and is very much a work in progress. There are many features I would like to implement, including the following:
+As I've mentioned in the beginning of this README, chevette is still in its infancy and is very much a work in progress. There are many features I would like to implement, including the following:
 
 * Code syntax highlighting in posts
 * A drafts / unpublished mechanism
