@@ -1,5 +1,5 @@
 import setuptools
-from chevette.constants import VERSION
+from chevette.utils.constants import VERSION
 
 with open("README.md") as f:
     long_description = f.read()
