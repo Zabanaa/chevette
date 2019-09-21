@@ -4,7 +4,7 @@ from os.path import dirname, abspath, join
 
 
 CUR_DIR = getcwd()
-VERSION = '0.0.1'
+VERSION = '0.1.0'
 TEMPLATES_DIR = join(
     dirname(dirname(abspath(__file__))), 'templates'
 )
