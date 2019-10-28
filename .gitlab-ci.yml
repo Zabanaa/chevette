@@ -19,8 +19,8 @@ deploy:
     TWINE_USERNAME: $PYPI_USERNAME
     TWINE_PASSWORD: $PYPI_PASSWORD
   script:
-    - pipenv run pip freeze
-    # - python setup.py sdist
-    # - twine upload --skip-existing dist/*
+    - pipenv install --dev
+    - python setup.py sdist
+    - twine upload --skip-existing dist/*
   only:
     - production
